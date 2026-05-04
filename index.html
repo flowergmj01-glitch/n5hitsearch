@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026趨勢版 N5 實用日語互動學習卡 - 選擇題挑戰版</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        
+        body {
+            font-family: 'Noto Sans TC', 'Noto Sans JP', sans-serif;
+            background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+        }
+
+        /* ---------------------------------
+           MacBook 外觀設計 
+        --------------------------------- */
+        .macbook-frame {
+            width: 100%;
+            max-width: 1400px;
+            aspect-ratio: 16 / 10;
+            background: linear-gradient(to bottom, #d5d6d8 0%, #b8babb 100%);
+            border-radius: 36px;
+            padding: 16px 16px 24px 16px;
+            box-shadow: 
+                0 25px 50px -12px rgba(0, 0, 0, 0.4),
+                inset 0 2px 4px rgba(255, 255, 255, 0.8),
+                inset 0 -2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .macbook-screen-border {
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            border-radius: 20px;
+            padding: 8px;
+            position: relative;
+        }
+
+        .macbook-screen {
+            width: 100%;
+            height: 100%;
+            background-color: #Fafafe;
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* ---------------------------------
+           字體大小與排版設定
+        --------------------------------- */
+        .sentence-text {
+            font-size: clamp(14pt, 1.5vw, 20pt);
+            line-height: 1.6;
+            white-space: nowrap;
+        }
+
+        .main-jp-text {
+            font-size: clamp(18pt, 2vw, 28pt);
+            font-weight: 900;
+            color: #1f2937;
+            text-align: center;
+            /* 配合手動 <br> 確保 10字元 內不斷單字 */
+            white-space: nowrap; 
+            line-height: 1.5;
+        }
+        
+        .main-jp-text ruby, .sentence-text ruby, .prompt-text ruby, .option-btn ruby {
+            ruby-position: over;
+        }
+        .main-jp-text rt {
+            font-size: 11pt;
+            color: #d946ef; 
+            font-weight: 700;
+            transform: translateY(-4px);
+        }
+
+        .sentence-text rt, .prompt-text rt, .option-btn rt {
+            font-size: 9pt;
+            color: #d946ef;
+            font-weight: 700;
+            transform: translateY(-2px);
+        }
+
+        .zh-translation-text {
+            font-size: clamp(14pt, 1.5vw, 18pt);
+            color: #6b7280;
+            font-weight: 700;
+            white-space: nowrap;
+            line-height: 1.5;
+        }
+
+        .page-enter {
+            animation: fadeInScale 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        @keyframes fadeInScale {
+            0% { opacity: 0; transform: scale(0.98); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        .no-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .no-scrollbar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .no-scrollbar::-webkit-scrollbar-thumb {
+            background: #fbcfe8;
+            border-radius: 4px;
+        }
+        .no-scrollbar:hover::-webkit-scrollbar-thumb {
+            background: #f472b6;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 md:p-8">
+
+    <div class="macbook-frame relative">
+        <div class="macbook-screen-border">
+            <div class="absolute top-0 left-1/2 transform -translate-x-1/2 w-40 h-6 bg-black rounded-b-xl flex justify-center items-center z-20">
+                <div class="w-3 h-3 rounded-full bg-[#111] border border-gray-700 shadow-inner flex items-center justify-center">
+                    <div class="w-1 h-1 rounded-full bg-purple-900/50"></div>
+                </div>
+            </div>
+
+            <div class="macbook-screen page-enter" id="app-window">
+                <div class="h-12 bg-[#e5e5ea]/80 backdrop-blur-md flex items-center px-4 border-b border-gray-300 shrink-0">
+                    <div class="flex space-x-2 w-20">
+                        <div class="w-3.5 h-3.5 rounded-full bg-[#FF5F56] border border-[#E0443E]"></div>
+                        <div class="w-3.5 h-3.5 rounded-full bg-[#FFBD2E] border border-[#DEA123]"></div>
+                        <div class="w-3.5 h-3.5 rounded-full bg-[#27C93F] border border-[#1AAB29]"></div>
+                    </div>
+                    <div class="flex-1 text-center font-bold text-gray-700 text-sm tracking-widest">
+                        <i class="fa-solid fa-graduation-cap mr-2"></i> 2026趨勢版 N5 實用日語學習卡 - 選擇題測驗
+                    </div>
+                    <div class="w-20 text-right">
+                        <span id="page-indicator" class="text-xs font-bold text-gray-500 bg-gray-200 px-3 py-1 rounded-full">1 / 30</span>
+                    </div>
+                </div>
+
+                <div class="flex-1 flex flex-row overflow-hidden bg-[#Fafafe]">
+                    
+                    <div class="w-[40%] bg-white border-r border-gray-200 p-8 flex flex-col items-center justify-center relative shadow-sm z-10 shrink-0">
+                        <span id="category-badge" class="px-5 py-2 bg-pink-100 text-pink-700 rounded-full text-lg font-bold tracking-wider mb-8 shadow-sm whitespace-nowrap">
+                            類別標籤
+                        </span>
+                        
+                        <div class="w-full flex justify-center items-center overflow-x-auto no-scrollbar mb-6 px-4 pb-2">
+                            <div id="jp-text" class="main-jp-text"></div>
+                        </div>
+                        
+                        <div class="w-full flex justify-center overflow-x-auto no-scrollbar px-4 pb-2 mt-4">
+                            <p id="zh-text" class="zh-translation-text text-center text-gray-400"></p>
+                        </div>
+                    </div>
+
+                    <div class="w-[60%] p-8 flex flex-col overflow-y-auto no-scrollbar relative">
+                        <div class="flex-1 flex flex-col justify-center space-y-6">
+                            
+                            <div class="bg-white rounded-3xl p-6 shadow-sm border border-pink-50 relative overflow-hidden group hover:shadow-md transition">
+                                <div class="absolute top-0 left-0 w-3 h-full bg-pink-400"></div>
+                                <div class="mb-4">
+                                    <span class="bg-pink-50 text-pink-700 text-sm font-bold px-3 py-1.5 rounded-lg inline-flex items-center">
+                                        <i class="fa-solid fa-fire mr-2"></i> 2026趨勢例句
+                                    </span>
+                                </div>
+                                <div class="space-y-4 pl-2 overflow-x-auto no-scrollbar pb-3">
+                                    <p id="ex-life-jp" class="sentence-text font-bold text-gray-800 tracking-wide"></p>
+                                    <p id="ex-life-zh" class="sentence-text text-gray-500 font-medium"></p>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mt-8 bg-white rounded-3xl p-6 shadow-md border border-gray-100 shrink-0">
+                            <div class="flex justify-between items-center mb-4">
+                                <h3 class="text-gray-800 font-bold flex items-center text-xl">
+                                    <i class="fa-solid fa-gamepad text-purple-500 mr-2 text-2xl"></i> 實戰應用挑戰
+                                </h3>
+                                <button onclick="showHint()" class="bg-yellow-100 hover:bg-yellow-200 text-yellow-700 font-bold py-2 px-4 rounded-xl transition text-sm flex items-center" title="看解答提示">
+                                    <i class="fa-regular fa-lightbulb mr-2"></i> 提示
+                                </button>
+                            </div>
+                            
+                            <div class="bg-purple-50 border-l-4 border-purple-400 p-4 mb-6 rounded-r-2xl overflow-x-auto no-scrollbar">
+                                <p id="exercise-prompt" class="prompt-text text-gray-700 font-bold text-[1.2rem] leading-relaxed tracking-wide whitespace-nowrap"></p>
+                            </div>
+                            
+                            <div id="options-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 w-full">
+                                </div>
+                            
+                            <div id="feedback-msg" class="mt-4 font-bold h-8 text-xl hidden text-center"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="h-20 bg-white border-t border-gray-200 px-8 flex justify-between items-center shrink-0">
+                    <button onclick="prevPage()" id="btn-prev" class="px-8 py-4 rounded-2xl font-bold text-gray-600 bg-gray-100 hover:bg-gray-200 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center text-xl">
+                        <i class="fa-solid fa-arrow-left mr-3"></i> 上一張
+                    </button>
+                    
+                    <div class="flex-1 mx-12 h-3 bg-gray-100 rounded-full overflow-hidden shadow-inner">
+                        <div id="progress-bar" class="h-full bg-gradient-to-r from-pink-400 to-purple-500 transition-all duration-300 rounded-full"></div>
+                    </div>
+
+                    <button onclick="nextPage()" id="btn-next" class="px-8 py-4 rounded-2xl font-bold text-white bg-purple-600 shadow-md hover:bg-purple-700 disabled:opacity-40 disabled:cursor-not-allowed transition flex items-center text-xl">
+                        下一張 <i class="fa-solid fa-arrow-right ml-3"></i>
+                    </button>
+                </div>
+
+            </div>
+        </div>
+        
+        <div class="absolute bottom-1 left-1/2 transform -translate-x-1/2 w-48 h-3 bg-[#a0a2a4] rounded-t-xl shadow-inner"></div>
+    </div>
+
+    <script>
+        // 2026趨勢進階N5資料庫
+        // j, z 已經過嚴格計算，手動植入 <br>，確保單行不超過 10 個字元且單字不被切斷
+        // 陣列第一個選項為正解，渲染時會自動打亂
+        const lessons = [
+            { id:1, c:'比較句型', 
+              j:'最近の<ruby>麻辣湯<rt>マーラータン</rt></ruby>は<br>ラーメン<span class="text-fuchsia-600 font-bold">より</span><br>人気があります', 
+              z:'最近的麻辣燙<br>比拉麵還要<br>受歡迎', 
+              lJ:'<ruby>韓国<rt>かんこく</rt></ruby>の<ruby>美容<rt>びよう</rt></ruby>は<ruby>日本<rt>にほん</rt></ruby>より<ruby>進<rt>すす</rt></ruby>んでいます。', lZ:'韓國的美容比日本先進。', 
+              eQ:'A：<ruby>今年<rt>ことし</rt></ruby>の<ruby>夏<rt>なつ</rt></ruby>はどうですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(今年的夏天如何？)</span><br>B：<span class="text-purple-600 font-bold">(今年比去年還要熱喔。)</span>', 
+              opts: ['今年は去年より暑いです。', '今年は去年に暑いです。', '今年より去年は暑いです。', '今年と去年は暑いです。'] },
+            { id:2, c:'比較選擇', 
+              j:'ぬい<ruby>活<rt>かつ</rt></ruby><span class="text-fuchsia-600 font-bold">と</span>ガチャ<span class="text-fuchsia-600 font-bold">と</span><br><span class="text-fuchsia-600 font-bold">どちらが</span><br>お金がかかりますか', 
+              z:'養娃和轉扭蛋<br>哪一個比較<br>花錢呢？', 
+              lJ:'スマホ<span class="text-fuchsia-600 font-bold">と</span>パソコン<span class="text-fuchsia-600 font-bold">と</span><span class="text-fuchsia-600 font-bold">どちらが</span><ruby>便利<rt>べんり</rt></ruby>ですか。', lZ:'手機和電腦哪一個比較方便？', 
+              eQ:'A：お<ruby>飲<rt>の</rt></ruby>み<ruby>物<rt>もの</rt></ruby>は<ruby>何<rt>なに</rt></ruby>にしますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(飲料要喝什麼？)</span><br>B：<span class="text-purple-600 font-bold">(咖啡跟紅茶你比較喜歡哪一個？)</span>', 
+              opts: ['コーヒーと紅茶とどちらが好きですか。', 'コーヒーや紅茶とどれが好きですか。', 'コーヒーと紅茶よりどちらが好きですか。', 'コーヒーから紅茶まで好きですか。'] },
+            { id:3, c:'最高級', 
+              j:'今年の流行色<span class="text-fuchsia-600 font-bold">の中で</span><br>ピンクが<span class="text-fuchsia-600 font-bold">一番</span><br>綺麗ですね', 
+              z:'今年的流行色中<br>粉紅色是<br>最漂亮的呢', 
+              lJ:'<ruby>世界<rt>せかい</rt></ruby>の<ruby>料理<rt>りょうり</rt></ruby><span class="text-fuchsia-600 font-bold">の中で</span><ruby>和食<rt>わしょく</rt></ruby>が<span class="text-fuchsia-600 font-bold">一番</span><ruby>好<rt>す</rt></ruby>きです。', lZ:'世界料理中我最喜歡和食。', 
+              eQ:'A：<ruby>果物<rt>くだもの</rt></ruby>が<ruby>好<rt>す</rt></ruby>きですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(你喜歡水果嗎？)</span><br>B：<span class="text-purple-600 font-bold">(對，水果中最喜歡蘋果。)</span>', 
+              opts: ['果物の中でりんごが一番好きです。', '果物はりんごが一番好きです。', '果物の中でりんごと一番好きです。', 'りんごは果物の一番好きです。'] },
+            { id:4, c:'欲求表達', 
+              j:'私は仕事用の<br>AIパートナー<span class="text-fuchsia-600 font-bold">が</span><br><span class="text-fuchsia-600 font-bold">ほしいです</span>', 
+              z:'我想要一個<br>工作用的<br>AI夥伴', 
+              lJ:'<ruby>新<rt>あたら</rt></ruby>しい<ruby>電気自動車<rt>でんきじどうしゃ</rt></ruby><span class="text-fuchsia-600 font-bold">が</span><span class="text-fuchsia-600 font-bold">ほしいです</span>。', lZ:'我想要一台新的電動車。', 
+              eQ:'A：<ruby>誕生日<rt>たんじょうび</rt></ruby>に<ruby>何<rt>なに</rt></ruby>がほしいですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(生日想要什麼？)</span><br>B：<span class="text-purple-600 font-bold">(我想要新手錶。)</span>', 
+              opts: ['私は新しい時計がほしいです。', '私は新しい時計をほしいです。', '私に新しい時計がほしいです。', '私は新しい時計がたいです。'] },
+            { id:5, c:'欲求否定', 
+              j:'デトックスですから<br>スマホを<br><span class="text-fuchsia-600 font-bold">見たくないです</span>', 
+              z:'因為在數位排毒<br>所以不想看手機', 
+              lJ:'<ruby>疲<rt>つか</rt></ruby>れましたから、<ruby>何<rt>なに</rt></ruby>も<span class="text-fuchsia-600 font-bold">したくないです</span>。', lZ:'因為累了，什麼都不想做。', 
+              eQ:'A：<ruby>週末<rt>しゅうまつ</rt></ruby>はどこへ<ruby>行<rt>い</rt></ruby>きますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(週末要去哪裡？)</span><br>B：<span class="text-purple-600 font-bold">(因為很累，所以哪裡都不想去。)</span>', 
+              opts: ['疲れたので、どこへも行きたくないです。', '疲れたので、どこも行きたくないです。', '疲れたので、どこへも行きたいです。', '疲れたので、どこへ行きません。'] },
+            { id:6, c:'移動目的', 
+              j:'デパートへ<br><ruby>韓国<rt>かんこく</rt></ruby>スイーツを<br><span class="text-fuchsia-600 font-bold">買いに行きます</span>', 
+              z:'我要去百貨公司<br>買韓國甜點', 
+              lJ:'<ruby>週末<rt>しゅうまつ</rt></ruby>は<ruby>映画<rt>えいが</rt></ruby>を<span class="text-fuchsia-600 font-bold">見に行きます</span>。', lZ:'週末要去看電影。', 
+              eQ:'A：<ruby>午後<rt>ごご</rt></ruby>からどうしますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(下午開始要做什麼？)</span><br>B：<span class="text-purple-600 font-bold">(要去圖書館借書。)</span>', 
+              opts: ['図書館へ本を借りに行きます。', '図書館へ本が借りに行きます。', '図書館で本を借りに行きます。', '図書館へ本を借りに来ます。'] },
+            { id:7, c:'て形・許可', 
+              j:'万博の会場で<br>動画を<span class="text-fuchsia-600 font-bold">撮っても</span><br><span class="text-fuchsia-600 font-bold">いいですか</span>', 
+              z:'可以在萬博會場<br>拍影片嗎？', 
+              lJ:'オンラインで<ruby>会議<rt>かいぎ</rt></ruby>を<span class="text-fuchsia-600 font-bold">しても</span><span class="text-fuchsia-600 font-bold">いいですか</span>。', lZ:'可以進行線上會議嗎？', 
+              eQ:'A：<ruby>少<rt>すこ</rt></ruby>し<ruby>暑<rt>あつ</rt></ruby>いですね。<br><span class="text-[0.95rem] text-gray-500 font-medium">(有點熱呢。)</span><br>B：<span class="text-purple-600 font-bold">(可以打開窗戶嗎？)</span>', 
+              opts: ['窓を開けてもいいですか。', '窓が開けてもいいですか。', '窓を開けてはいけませんか。', '窓を開けなくてもいいですか。'] },
+            { id:8, c:'て形・禁止', 
+              j:'夜の渋谷では<br>お酒を<span class="text-fuchsia-600 font-bold">飲んで</span><br><span class="text-fuchsia-600 font-bold">はいけません</span>', 
+              z:'夜晚的澀谷<br>是不可以<br>在路上喝酒的', 
+              lJ:'<ruby>授業<rt>じゅぎょう</rt></ruby><ruby>中<rt>ちゅう</rt></ruby>にスマホを<span class="text-fuchsia-600 font-bold">使ってはいけません</span>。', lZ:'上課中不可以使用手機。', 
+              eQ:'A：<ruby>美術館<rt>びじゅつかん</rt></ruby>のルールは<ruby>何<rt>なん</rt></ruby>ですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(美術館的規定是什麼？)</span><br>B：<span class="text-purple-600 font-bold">(不可以觸碰畫作喔。)</span>', 
+              opts: ['絵に触ってはいけません。', '絵を触ってはいけません。', '絵に触ってもいいです。', '絵が触ってはいけません。'] },
+            { id:9, c:'て形・進行', 
+              j:'若者の間で<br>新しいポーズが<br><span class="text-fuchsia-600 font-bold">流行っています</span>', 
+              z:'年輕人之間<br>正在流行<br>新的拍照姿勢', 
+              lJ:'<ruby>彼<rt>かれ</rt></ruby>は今、リモートで<ruby>働<rt>はたら</rt></ruby>い<span class="text-fuchsia-600 font-bold">ています</span>。', lZ:'他現在正在遠距工作。', 
+              eQ:'A：<ruby>山田<rt>やまだ</rt></ruby>さんはどこですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(山田先生在哪裡？)</span><br>B：<span class="text-purple-600 font-bold">(現在正在會議室講電話。)</span>', 
+              opts: ['今、会議室で電話をかけています。', '今、会議室に電話をかけています。', '今、会議室で電話がかけています。', '今、会議室で電話をかけます。'] },
+            { id:10, c:'て形・狀態', 
+              j:'あの有名な<br>コグマパンを<br><span class="text-fuchsia-600 font-bold">知っていますか</span>', 
+              z:'你知道那個<br>很有名的<br>地瓜麵包嗎？', 
+              lJ:'<ruby>私<rt>わたし</rt></ruby>は<ruby>東京<rt>とうきょう</rt></ruby>に<ruby>住<rt>す</rt></ruby>ん<span class="text-fuchsia-600 font-bold">でいます</span>。', lZ:'我住在東京。', 
+              eQ:'A：お<ruby>兄<rt>あに</rt></ruby>さんはお<ruby>仕事<rt>しごと</rt></ruby>ですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(你哥哥在工作嗎？)</span><br>B：<span class="text-purple-600 font-bold">(哥哥在大學教英文。)</span>', 
+              opts: ['兄は大学で英語を教えています。', '兄は大学に英語を教えています。', '兄は大学で英語が教えています。', '兄は大学で英語を教えます。'] },
+            { id:11, c:'て形・順序', 
+              j:'シールを<span class="text-fuchsia-600 font-bold">買って</span><br>友達と<br><span class="text-fuchsia-600 font-bold">交換します</span>', 
+              z:'買可愛的貼紙<br>然後和朋友交換', 
+              lJ:'<ruby>朝<rt>あさ</rt></ruby><ruby>起<rt>お</rt></ruby>き<span class="text-fuchsia-600 font-bold">て</span>、ご<ruby>飯<rt>はん</rt></ruby>を<ruby>食<rt>た</rt></ruby>べます。', lZ:'早上起床後吃飯。', 
+              eQ:'A：<ruby>昨日<rt>きのう</rt></ruby>の<ruby>夜<rt>よる</rt></ruby>は<ruby>何<rt>なに</rt></ruby>をしましたか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(昨天晚上做了什麼？)</span><br>B：<span class="text-purple-600 font-bold">(看了電視，然後洗了澡。)</span>', 
+              opts: ['テレビを見て、お風呂に入りました。', 'テレビを見って、お風呂に入りました。', 'テレビを見る、お風呂に入りました。', 'テレビを見て、お風呂に入るました。'] },
+            { id:12, c:'て形・先後', 
+              j:'AIに<span class="text-fuchsia-600 font-bold">聞いてから</span><br>レポートを<br>書きます', 
+              z:'問過AI之後<br>再來寫報告', 
+              lJ:'<ruby>仕事<rt>しごと</rt></ruby>が<ruby>終<rt>お</rt></ruby>わっ<span class="text-fuchsia-600 font-bold">てから</span>、<ruby>飲<rt>の</rt></ruby>みに<ruby>行<rt>い</rt></ruby>きます。', lZ:'工作結束之後，去喝一杯。', 
+              eQ:'A：いつ<ruby>宿題<rt>しゅくだい</rt></ruby>をしますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(什麼時候要寫作業？)</span><br>B：<span class="text-purple-600 font-bold">(吃完晚餐後，才寫作業。)</span>', 
+              opts: ['晩ご飯を食べてから、宿題をします。', '晩ご飯を食べるから、宿題をします。', '晩ご飯を食べて、宿題をします。', '晩ご飯を食べてから、宿題がします。'] },
+            { id:13, c:'形容詞並列', 
+              j:'平成の服は<br>カラフル<span class="text-fuchsia-600 font-bold">で</span><br>可愛いです', 
+              z:'平成時代的衣服<br>色彩豐富<br>又可愛', 
+              lJ:'このレストランは<ruby>安<rt>やす</rt></ruby><span class="text-fuchsia-600 font-bold">くて</span><ruby>美味<rt>おい</rt></ruby>しいです。', lZ:'這間餐廳又便宜又好吃。', 
+              eQ:'A：<ruby>新<rt>あたら</rt></ruby>しいアパートはどうですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(新公寓怎麼樣？)</span><br>B：<span class="text-purple-600 font-bold">(房間很寬敞，非常乾淨。)</span>', 
+              opts: ['部屋が広くて、とてもきれいです。', '部屋が広いして、とてもきれいです。', '部屋が広くで、とてもきれいです。', '部屋は広いで、とてもきれいです。'] },
+            { id:14, c:'ない形・請求', 
+              j:'AIの嘘の画像を<br><span class="text-fuchsia-600 font-bold">信じないで</span><br><span class="text-fuchsia-600 font-bold">ください</span>', 
+              z:'請不要相信<br>AI生成的<br>假圖片', 
+              lJ:'ここで<ruby>煙草<rt>たばこ</rt></ruby>を<span class="text-fuchsia-600 font-bold">吸わないでください</span>。', lZ:'請不要在這裡抽菸。', 
+              eQ:'A：テスト<ruby>中<rt>ちゅう</rt></ruby>です。<br><span class="text-[0.95rem] text-gray-500 font-medium">(現在正在考試中。)</span><br>B：<span class="text-purple-600 font-bold">(請不要跟旁邊的人說話。)</span>', 
+              opts: ['隣の人と話さないでください。', '隣の人と話さないてください。', '隣の人と話しでください。', '隣の人と話しませんでください。'] },
+            { id:15, c:'ない形・義務', 
+              j:'お金を<br><span class="text-fuchsia-600 font-bold">払わなければ</span><br><span class="text-fuchsia-600 font-bold">なりません</span>', 
+              z:'每個月必須<br>付訂閱費', 
+              lJ:'<ruby>明日<rt>あした</rt></ruby>は<ruby>早<rt>はや</rt></ruby>く<ruby>起<rt>お</rt></ruby>き<span class="text-fuchsia-600 font-bold">なければなりません</span>。', lZ:'明天必須早起。', 
+              eQ:'A：もう<ruby>帰<rt>かえ</rt></ruby>りますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(要回去了嗎？)</span><br>B：<span class="text-purple-600 font-bold">(對，必須準備行李了。)</span>', 
+              opts: ['はい、荷物を準備しなければなりません。', 'はい、荷物を準備しないければなりません。', 'はい、荷物を準備してはなりません。', 'はい、荷物を準備しなくてもいいです。'] },
+            { id:16, c:'ない形・免除', 
+              j:'現金を<br>持た<span class="text-fuchsia-600 font-bold">なくても</span><br><span class="text-fuchsia-600 font-bold">いいです</span>', 
+              z:'因為用手機支付<br>所以不用帶<br>現金也可以', 
+              lJ:'<ruby>急<rt>いそ</rt></ruby>が<span class="text-fuchsia-600 font-bold">なくてもいいです</span>よ。', lZ:'不趕時間也沒關係喔。', 
+              eQ:'A：<ruby>明日<rt>あした</rt></ruby>は<ruby>制服<rt>せいふく</rt></ruby>ですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(明天要穿制服嗎？)</span><br>B：<span class="text-purple-600 font-bold">(不，不用穿制服也可以。)</span>', 
+              opts: ['いいえ、制服を着なくてもいいです。', 'いいえ、制服を着てはいけません。', 'いいえ、制服を着ないでもいいです。', 'いいえ、制服を着るなくてもいいです。'] },
+            { id:17, c:'辭書形・可能', 
+              j:'アプリで外国語を<br><span class="text-fuchsia-600 font-bold">話すことが</span><br><span class="text-fuchsia-600 font-bold">できます</span>', 
+              z:'用語音APP<br>就能夠說<br>外國語', 
+              lJ:'ここで<ruby>両替<rt>りょうがえ</rt></ruby>する<span class="text-fuchsia-600 font-bold">ことができます</span>か。', lZ:'可以在這裡換錢嗎？', 
+              eQ:'A：このカードは<ruby>使<rt>つか</rt></ruby>えますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(這張卡可以使用嗎？)</span><br>B：<span class="text-purple-600 font-bold">(可以，能用信用卡付款。)</span>', 
+              opts: ['はい、カードで払うことができます。', 'はい、カードに払うことができます。', 'はい、カードで払うことができません。', 'はい、カードを払うことができます。'] },
+            { id:18, c:'辭書形・動作前', 
+              j:'サウナに<span class="text-fuchsia-600 font-bold">入る前に</span><br>水をたくさん<br>飲みます', 
+              z:'進去三溫暖之前<br>會喝很多水', 
+              lJ:'<ruby>寝<rt>ね</rt></ruby>る<span class="text-fuchsia-600 font-bold">前<rt>まえ</rt>に</span>、<ruby>本<rt>ほん</rt></ruby>を<ruby>読<rt>よ</rt></ruby>みます。', lZ:'睡覺前，我會看書。', 
+              eQ:'A：<ruby>旅行<rt>りょこう</rt></ruby>の<ruby>準備<rt>じゅんび</rt></ruby>はいつしますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(什麼時候要準備旅行的東西？)</span><br>B：<span class="text-purple-600 font-bold">(去日本前，要先買包包。)</span>', 
+              opts: ['日本へ行く前に、カバンを買います。', '日本へ行った前に、カバンを買います。', '日本へ行くの前、カバンを買います。', '日本へ行く前に、カバンが買います。'] },
+            { id:19, c:'辭書形・名詞化', 
+              j:'私の趣味は<br>推しを<span class="text-fuchsia-600 font-bold">応援する</span><br><span class="text-fuchsia-600 font-bold">ことです</span>', 
+              z:'我的興趣是<br>應援喜歡的偶像', 
+              lJ:'<ruby>私<rt>わたし</rt></ruby>の<ruby>趣味<rt>しゅみ</rt></ruby>は<ruby>絵<rt>え</rt></ruby>を<ruby>描<rt>か</rt></ruby>く<span class="text-fuchsia-600 font-bold">ことです</span>。', lZ:'我的興趣是畫畫。', 
+              eQ:'A：<ruby>休<rt>やす</rt></ruby>みの<ruby>日<rt>ひ</rt></ruby>の<ruby>楽<rt>たの</rt></ruby>しみは<ruby>何<rt>なん</rt></ruby>ですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(休假的樂趣是什麼？)</span><br>B：<span class="text-purple-600 font-bold">(休假的時候就是看電影。)</span>', 
+              opts: ['休みの日は映画を見ることです。', '休みの日は映画を見ますことです。', '休みの日は映画を見たことです。', '休みの日は映画を見のことです。'] },
+            { id:20, c:'た形・經驗', 
+              j:'倍速で映画を<br><span class="text-fuchsia-600 font-bold">見たことが</span><br><span class="text-fuchsia-600 font-bold">ありますか</span>', 
+              z:'你有用兩倍速<br>看過電影嗎？', 
+              lJ:'<ruby>富士山<rt>ふじさん</rt></ruby>に<ruby>登<rt>のぼ</rt></ruby>っ<span class="text-fuchsia-600 font-bold">たことがあります</span>か。', lZ:'你爬過富士山嗎？', 
+              eQ:'A：<ruby>日本<rt>にほん</rt></ruby>で<ruby>特別<rt>とくべつ</rt></ruby>な<ruby>経験<rt>けいけん</rt></ruby>はありますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(在日本有什麼特別的經驗嗎？)</span><br>B：<span class="text-purple-600 font-bold">(我穿過和服喔。)</span>', 
+              opts: ['着物を着たことがあります。', '着物を着るがあります。', '着物を着てことがあります。', '着物を着たことがありません。'] },
+            { id:21, c:'た形・經驗否定', 
+              j:'まだ一度も<br>VR旅行を<span class="text-fuchsia-600 font-bold">した</span><br><span class="text-fuchsia-600 font-bold">ことがありません</span>', 
+              z:'我還沒有<br>體驗過VR旅行', 
+              lJ:'<ruby>一度<rt>いちど</rt></ruby>も<ruby>寿司<rt>すし</rt></ruby>を<ruby>食<rt>た</rt></ruby>べ<span class="text-fuchsia-600 font-bold">たことがありません</span>。', lZ:'我一次也沒有吃過壽司。', 
+              eQ:'A：ヨーロッパへ<ruby>行<rt>い</rt></ruby>きましたか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(你去過歐洲嗎？)</span><br>B：<span class="text-purple-600 font-bold">(沒有，一次也沒去過。)</span>', 
+              opts: ['いいえ、一度も行ったことがありません。', 'いいえ、一度も行ったことがあります。', 'いいえ、一度も行くことがありません。', 'いいえ、一度も行きません。'] },
+            { id:22, c:'た形・列舉', 
+              j:'休日は動画を<br><span class="text-fuchsia-600 font-bold">見たり</span>ゲームを<br><span class="text-fuchsia-600 font-bold">したりします</span>', 
+              z:'休假時有時看影片<br>有時打打遊戲', 
+              lJ:'<ruby>本<rt>ほん</rt></ruby>を<ruby>読<rt>よ</rt></ruby>ん<span class="text-fuchsia-600 font-bold">だり</span>、<ruby>音楽<rt>おんがく</rt></ruby>を<ruby>聞<rt>き</rt></ruby>い<span class="text-fuchsia-600 font-bold">たりします</span>。', lZ:'有時看書，有時聽音樂。', 
+              eQ:'A：<ruby>週末<rt>しゅうまつ</rt></ruby>は<ruby>何<rt>なに</rt></ruby>をしますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(週末要做什麼？)</span><br>B：<span class="text-purple-600 font-bold">(有時買買東西，有時看看電影。)</span>', 
+              opts: ['買い物したり、映画を見たりします。', '買い物して、映画を見ます。', '買い物したり、映画を見たします。', '買い物すたり、映画を見たりします。'] },
+            { id:23, c:'變化 (い形容詞)', 
+              j:'最近は夏の<br>期間がとても<br><span class="text-fuchsia-600 font-bold">長くなりました</span>', 
+              z:'最近夏天的期間<br>變得非常長了呢', 
+              lJ:'<ruby>最近<rt>さいきん</rt></ruby>、<ruby>寒<rt>さむ</rt></ruby><span class="text-fuchsia-600 font-bold">くなりました</span>ね。', lZ:'最近變冷了呢。', 
+              eQ:'A：お子さんは<ruby>元気<rt>げんき</rt></ruby>ですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(你的孩子還好嗎？)</span><br>B：<span class="text-purple-600 font-bold">(是的，長高了呢。)</span>', 
+              opts: ['はい、背が高くなりました。', 'はい、背が高いになりました。', 'はい、背が高さになりました。', 'はい、背が高くしました。'] },
+            { id:24, c:'變化 (名詞/な形)', 
+              j:'日本の町は<br>外国人で<br><span class="text-fuchsia-600 font-bold">賑やかになりました</span>', 
+              z:'日本的城鎮<br>因為外國人<br>變得熱鬧了', 
+              lJ:'<ruby>日本語<rt>にほんご</rt></ruby>が<ruby>上手<rt>じょうず</rt></ruby><span class="text-fuchsia-600 font-bold">になりました</span>。', lZ:'日文變好了。', 
+              eQ:'A：<ruby>部屋<rt>へや</rt></ruby>の<ruby>掃除<rt>そうじ</rt></ruby>をしましたか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(打掃房間了嗎？)</span><br>B：<span class="text-purple-600 font-bold">(是的，變得非常乾淨了。)</span>', 
+              opts: ['はい、とてもきれいになりました。', 'はい、とてもきれいなりました。', 'はい、とてもきれいくなりました。', 'はい、とてもきれいにしました。'] },
+            { id:25, c:'理由表達', 
+              j:'エコバッグが<br>あり<span class="text-fuchsia-600 font-bold">ますから</span><br>袋は要りません', 
+              z:'因為我有環保袋<br>所以不需要<br>塑膠袋', 
+              lJ:'<ruby>時間<rt>じかん</rt></ruby>がありまん<span class="text-fuchsia-600 font-bold">から</span>、<ruby>急<rt>いそ</rt></ruby>ぎましょう。', lZ:'因為沒時間了，我們快點吧。', 
+              eQ:'A：どうして<ruby>食<rt>た</rt></ruby>べないんですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(為什麼不吃呢？)</span><br>B：<span class="text-purple-600 font-bold">(因為肚子痛，所以不吃。)</span>', 
+              opts: ['お腹が痛いですから、食べません。', 'お腹が痛いだから、食べません。', 'お腹が痛いですから、食べましょう。', 'お腹を痛いですから、食べません。'] },
+            { id:26, c:'頻率表達', 
+              j:'一週間に<br>二回だけ会社へ<br>行きます', 
+              z:'一個禮拜<br>只去公司兩次', 
+              lJ:'<ruby>一週間<rt>いっしゅうかん</rt></ruby><span class="text-fuchsia-600 font-bold">に</span><ruby>二回<rt>にかい</rt></ruby>テニスをします。', lZ:'一個禮拜打兩次網球。', 
+              eQ:'A：よく<ruby>映画<rt>えいが</rt></ruby>を<ruby>見<rt>み</rt></ruby>ますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(你常看電影嗎？)</span><br>B：<span class="text-purple-600 font-bold">(一個月看一次電影。)</span>', 
+              opts: ['一ヶ月に一回映画を見ます。', '一ヶ月で一回映画を見ます。', '一ヶ月の一回映画を見ます。', '一ヶ月へ一回映画を見ます。'] },
+            { id:27, c:'所要時間', 
+              j:'空飛ぶ車で<br>大阪まで何分<br><span class="text-fuchsia-600 font-bold">かかりますか</span>', 
+              z:'搭飛行汽車<br>到大阪需要<br>幾分鐘呢？', 
+              lJ:'<ruby>駅<rt>えき</rt></ruby>まで<ruby>歩<rt>ある</rt></ruby>いて<ruby>十分<rt>じゅっぷん</rt></ruby><span class="text-fuchsia-600 font-bold">かかります</span>。', lZ:'走到車站需要十分鐘。', 
+              eQ:'A：<ruby>東京<rt>とうきょう</rt></ruby>までどのくらいですか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(到東京大概要多久？)</span><br>B：<span class="text-purple-600 font-bold">(搭新幹線要兩個小時。)</span>', 
+              opts: ['新幹線で二時間かかります。', '新幹線に二時間かかります。', '新幹線で二時間をかかります。', '新幹線は二時間かかります。'] },
+            { id:28, c:'總數量', 
+              j:'このガチャは<br>一回<span class="text-fuchsia-600 font-bold">で</span><br>五百円です', 
+              z:'這個扭蛋<br>轉一次要<br>五百日圓', 
+              lJ:'このりんごは<ruby>三<rt>みっ</rt></ruby>つ<span class="text-fuchsia-600 font-bold">で</span><ruby>五百円<rt>ごひゃくえん</rt></ruby>です。', lZ:'這些蘋果三個賣五百日圓。', 
+              eQ:'A：<ruby>切手<rt>きって</rt></ruby>をください。<br><span class="text-[0.95rem] text-gray-500 font-medium">(請給我郵票。)</span><br>B：<span class="text-purple-600 font-bold">(麻煩給我五張80圓的郵票。)</span>', 
+              opts: ['八十円の切手を五枚お願いします。', '八十円の切手が五枚お願いします。', '八十円の切手を五つお願いします。', '八十円の切手に五枚お願いします。'] },
+            { id:29, c:'手段方法', 
+              j:'セルフレジ<span class="text-fuchsia-600 font-bold">で</span><br>バーコードを<br>読み取ります', 
+              z:'用自助結帳機<br>掃描條碼', 
+              lJ:'<ruby>日本語<rt>にほんご</rt></ruby><span class="text-fuchsia-600 font-bold">で</span>レポートを<ruby>書<rt>か</rt></ruby>きます。', lZ:'用日文寫報告。', 
+              eQ:'A：どうやって<ruby>空港<rt>くうこう</rt></ruby>へ<ruby>行<rt>い</rt></ruby>きますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(要怎麼去機場？)</span><br>B：<span class="text-purple-600 font-bold">(搭地鐵去機場。)</span>', 
+              opts: ['地下鉄で空港へ行きます。', '地下鉄に空港へ行きます。', '地下鉄を空港へ行きます。', '地下鉄へ空港へ行きます。'] },
+            { id:30, c:'全面否定', 
+              j:'顔認証だから<br>パスワードは<br><span class="text-fuchsia-600 font-bold">何も要りません</span>', 
+              z:'因為是臉部辨識<br>所以什麼密碼<br>都不需要', 
+              lJ:'<ruby>教室<rt>きょうしつ</rt></ruby>に<ruby>誰<rt>だれ</rt></ruby><span class="text-fuchsia-600 font-bold">もいません</span>。', lZ:'教室裡一個人都沒有。', 
+              eQ:'A：カバンの中に何がありますか。<br><span class="text-[0.95rem] text-gray-500 font-medium">(包包裡有什麼？)</span><br>B：<span class="text-purple-600 font-bold">(包包裡什麼都沒有。)</span>', 
+              opts: ['カバンの中に何もありません。', 'カバンの中に誰もありません。', 'カバンの中に何でもありません。', 'カバンの中に何がありません。'] }
+        ];
+
+        let currentPage = 1;
+        const totalPages = lessons.length;
+
+        const domAppWindow = document.getElementById('app-window');
+        const domProgress = document.getElementById('progress-bar');
+        const domIndicator = document.getElementById('page-indicator');
+        const domCategory = document.getElementById('category-badge');
+        const domJpText = document.getElementById('jp-text');
+        const domZhText = document.getElementById('zh-text');
+        
+        const domExLifeJp = document.getElementById('ex-life-jp');
+        const domExLifeZh = document.getElementById('ex-life-zh');
+        
+        const domPrompt = document.getElementById('exercise-prompt');
+        const domOptionsContainer = document.getElementById('options-container');
+        const domFeedback = document.getElementById('feedback-msg');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        function renderPage(pageId) {
+            domAppWindow.classList.remove('page-enter');
+            void domAppWindow.offsetWidth; 
+            domAppWindow.classList.add('page-enter');
+
+            const data = lessons[pageId - 1];
+            
+            domIndicator.innerText = `${data.id} / ${totalPages}`;
+            domProgress.style.width = `${(data.id / totalPages) * 100}%`;
+            
+            domCategory.innerText = data.c;
+            domJpText.innerHTML = data.j;
+            domZhText.innerHTML = data.z;
+
+            domExLifeJp.innerHTML = data.lJ;
+            domExLifeZh.innerText = data.lZ;
+
+            domPrompt.innerHTML = data.eQ;
+            domFeedback.classList.add('hidden');
+
+            // 準備四選一選項並打亂順序
+            const originalOpts = data.opts;
+            const correctAns = originalOpts[0]; // 陣列第一個永遠是正解
+            let shuffledOpts = [...originalOpts];
+            
+            for (let i = shuffledOpts.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [shuffledOpts[i], shuffledOpts[j]] = [shuffledOpts[j], shuffledOpts[i]];
+            }
+            
+            domOptionsContainer.innerHTML = '';
+            
+            shuffledOpts.forEach((opt) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn bg-white border-2 border-purple-200 text-gray-700 hover:border-purple-500 hover:bg-purple-50 rounded-2xl py-4 px-6 text-left text-[1.1rem] font-bold transition shadow-sm';
+                btn.innerHTML = opt;
+                btn.onclick = () => handleOptionClick(btn, opt === correctAns, correctAns);
+                domOptionsContainer.appendChild(btn);
+            });
+
+            btnPrev.disabled = (pageId === 1);
+            btnNext.disabled = (pageId === totalPages);
+        }
+
+        function handleOptionClick(clickedBtn, isCorrect, correctAns) {
+            const allBtns = document.querySelectorAll('.option-btn');
+            
+            // 停用所有按鈕並變更樣式
+            allBtns.forEach(btn => {
+                btn.disabled = true;
+                btn.classList.add('opacity-60', 'cursor-not-allowed');
+                btn.classList.remove('hover:border-purple-500', 'hover:bg-purple-50');
+                
+                // 找出正確解答並標示為綠色
+                if (btn.innerHTML === correctAns || btn.innerText === correctAns) {
+                    btn.classList.add('bg-green-100', 'border-green-500', 'text-green-800');
+                    btn.classList.remove('bg-white', 'border-purple-200', 'text-gray-700', 'opacity-60');
+                }
+            });
+            
+            domFeedback.classList.remove('hidden', 'text-green-600', 'text-red-500', 'text-purple-600');
+            
+            if (isCorrect) {
+                domFeedback.innerText = '✅ 答對了！非常棒！';
+                domFeedback.classList.add('text-green-600');
+            } else {
+                // 將選錯的按鈕標示為紅色
+                clickedBtn.classList.add('bg-red-100', 'border-red-500', 'text-red-800');
+                clickedBtn.classList.remove('opacity-60');
+                
+                domFeedback.innerText = '❌ 答錯囉，請看綠色正確解答！';
+                domFeedback.classList.add('text-red-500');
+            }
+        }
+
+        function showHint() {
+            const data = lessons[currentPage - 1];
+            const correctAns = data.opts[0];
+            const allBtns = document.querySelectorAll('.option-btn');
+            
+            // 讓正確按鈕稍微閃爍提示
+            allBtns.forEach(btn => {
+                if (btn.innerHTML === correctAns || btn.innerText === correctAns) {
+                    btn.classList.add('ring-4', 'ring-yellow-400', 'scale-[1.02]', 'bg-yellow-50');
+                    setTimeout(() => {
+                        btn.classList.remove('ring-4', 'ring-yellow-400', 'scale-[1.02]', 'bg-yellow-50');
+                    }, 1200);
+                }
+            });
+            
+            domFeedback.classList.remove('hidden', 'text-green-600', 'text-red-500');
+            domFeedback.classList.add('text-purple-600');
+            domFeedback.innerText = '💡 提示：請注意閃爍的選項！';
+        }
+
+        function nextPage() {
+            if (currentPage < totalPages) {
+                currentPage++;
+                renderPage(currentPage);
+            }
+        }
+
+        function prevPage() {
+            if (currentPage > 1) {
+                currentPage--;
+                renderPage(currentPage);
+            }
+        }
+
+        window.onload = () => {
+            renderPage(currentPage);
+        };
+    </script>
+</body>
+</html>
